@@ -39,7 +39,7 @@ pub struct FullBook {
     pub asks: Vec<LevelApi>,
 }
 
-/// Level sent by binance via ws and http
+/// Level sent by binance via ws and http, the order matters
 #[derive(Serialize, Deserialize)]
 pub struct LevelApi {
     pub price: String,
