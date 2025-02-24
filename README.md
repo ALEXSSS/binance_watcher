@@ -1,6 +1,6 @@
 Please look at help page in advance and make `cargo build`
 
-##Examples of usage:
+## Examples of usage:
 
 to run watching of btcusdt
 
