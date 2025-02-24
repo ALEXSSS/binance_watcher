@@ -1,5 +1,8 @@
-Please look at help page in advance
-Example of usage, to run watching of btcusdt
+Please look at help page in advance and make `cargo build`
+
+##Examples of usage:
+
+to run watching of btcusdt
 
 ```
   ./binance_watcher -i btcusdt
