@@ -32,7 +32,7 @@ pub struct BookDepthUpdate {
 /// [documentation]: [https://developers.binance.com/docs/derivatives/usds-margined-futures/websocket-market-streams/How-to-manage-a-local-order-book-correctly]
 #[derive(Serialize, Deserialize)]
 pub struct FullBook {
-    // tbd: could've been ignored as above but it has a long name?
+    // tbd: warning could've been ignored as above but it has a long name?
     #[serde(rename(deserialize = "lastUpdateId"))]
     pub last_update_id: u64,
     pub bids: Vec<LevelApi>,
