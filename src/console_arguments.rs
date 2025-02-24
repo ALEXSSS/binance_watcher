@@ -1,6 +1,7 @@
 use clap::Parser;
 use std::fmt;
 
+/// Help page configuration struct
 #[derive(Parser, Default)]
 #[command(version)]
 pub struct Config {
