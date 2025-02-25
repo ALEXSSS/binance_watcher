@@ -98,7 +98,7 @@ impl OrderBook {
         self.trim()
     }
 
-    // Result puc(crate)
+    // Result?
     pub fn apply_depth_book_update_from_websocket(&mut self, book: &BookDepthUpdate) -> bool {
         // for already applied updates from ws
         if self.is_update_applied(book) {
