@@ -96,18 +96,21 @@ impl OrderBook {
     }
 
     // tbd: Result<(), ()>? Better looking bool?
-    pub fn apply_depth_book_update_from_websocket(&mut self, book: &BookDepthUpdate) -> bool {
+    pub fn apply_depth_book_update_from_websocket(
+        &mut self,
+        book: &BookDepthUpdate,
+    ) -> Result<(), ()> {
         // for already applied updates from ws
         if self.is_update_applied(book) {
-            return true;
+            return Ok(());
         }
         // if book already too old, we need ask http api again
         if !self.is_eligible_for_update(book) {
-            return false;
+            return Err(());
         }
         // check that previous final id was last_id
         if !self.is_just_initialised && self.last_update_id != book.pu {
-            return false;
+            return Err(());
         }
 
         // update
@@ -120,7 +123,7 @@ impl OrderBook {
         self.last_update_id = book.u;
         self.trim();
 
-        true
+        Ok(())
     }
 
     // utils
@@ -435,14 +438,14 @@ mod test {
         let succ = book.apply_depth_book_update_from_websocket(&ws_book);
 
         // 1) our original book is too old with last_update_id == 0, update should return false
-        assert_eq!(succ, false);
+        assert_eq!(succ, Err(()));
 
         // 2) if book already applied update, then nothing should be done
         book.last_update_id = 100501;
 
         let succ = book.apply_depth_book_update_from_websocket(&ws_book);
 
-        assert_eq!(succ, true);
+        assert_eq!(succ, Ok(()));
         assert_eq!(book.bid.len(), 0);
         assert_eq!(book.ask.len(), 0);
         assert_eq!(book.last_update_id, 100501);
@@ -453,7 +456,7 @@ mod test {
 
         let succ = book.apply_depth_book_update_from_websocket(&ws_book);
 
-        assert_eq!(succ, true);
+        assert_eq!(succ, Ok(()));
         assert_eq!(book.bid.len(), 3);
         assert_eq!(book.ask.len(), 3);
         assert_eq!(book.last_update_id, 100500);

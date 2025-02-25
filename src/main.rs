@@ -100,6 +100,7 @@ async fn handle_updates(
             .expect("Failed to send message");
     }
 
+    // todo: consider to place it in a separate method?
     loop {
         // stop on ctrl-c
         if !is_app_running.load(Ordering::SeqCst) {
@@ -152,13 +153,16 @@ async fn handle_updates(
                                 let book_update: BookDepthUpdate = read_message(&msg);
                                 let book =
                                     order_books.get_mut(&book_update.s.to_lowercase()).unwrap();
-                                let success =
-                                    book.apply_depth_book_update_from_websocket(&book_update);
-                                if !success {
-                                    // eprintln!("Failed to apply depth book update");
-                                    break;
+
+                                match book.apply_depth_book_update_from_websocket(&book_update) {
+                                    Ok(_) => {
+                                        println!("{}", book)
+                                    }
+                                    Err(e) => {
+                                        // eprintln!("Failed to apply depth book update");
+                                        break;
+                                    }
                                 }
-                                println!("{}", book)
                             }
                             TypeOfUpdate::Ticker => {
                                 // tbd: calculated from book
