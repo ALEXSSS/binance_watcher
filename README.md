@@ -1,4 +1,4 @@
-Please have a look at the help page in advance and make `cargo build`
+Please have a look at the help page in advance after making `cargo build`
 
 ## Examples of usage:
 
